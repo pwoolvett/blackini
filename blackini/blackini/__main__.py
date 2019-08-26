@@ -7,7 +7,7 @@ import configparser
 import re
 import sys
 
-from black import main
+from black import main as main_black
 import toml
 
 
@@ -28,10 +28,11 @@ def patched_load(*a, **kw):
         pass
     return toml.decoder.load(*a, **kw)
 
-
-toml.load = patched_load
-
+def main():
+    sys.argv[0] = re.sub(r"(-script\.pyw?|\.exe)?$", "", sys.argv[0])
+    
+    toml.load = patched_load
+    sys.exit(main_black())
 
 if __name__ == "__main__":
-    sys.argv[0] = re.sub(r"(-script\.pyw?|\.exe)?$", "", sys.argv[0])
-    sys.exit(main())
+    main()
