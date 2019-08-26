@@ -1,11 +1,11 @@
 [tool.poetry]
 name = "blackini"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["Pablo Woolvett <pablowoolvett@gmail.com>"]
 
 [tool.poetry.scripts]
-  blackini = "blackini.__main__:main"
+black = "blackini.__main__:main"
 
 [tool.poetry.dependencies]
 python = "^3.6"
