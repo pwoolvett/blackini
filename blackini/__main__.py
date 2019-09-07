@@ -21,18 +21,25 @@ def patched_load(*a, **kw):
             config.read(file_)
             return {
                 "tool": {
-                    "black": {k: v for k, v in config["tool.black"].items()}
+                    "black": {
+                        k: v
+                        if "," not in v
+                        else [p for p in v.split(",") if p]
+                        for k, v in config["tool.black"].items()
+                    }
                 }
             }
     except BaseException:
         pass
     return toml.decoder.load(*a, **kw)
 
+
 def main():
     sys.argv[0] = re.sub(r"(-script\.pyw?|\.exe)?$", "", sys.argv[0])
-    
+
     toml.load = patched_load
     sys.exit(main_black())
+
 
 if __name__ == "__main__":
     main()
