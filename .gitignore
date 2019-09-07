@@ -3,3 +3,7 @@
 dist/**
 .vscode
 *.pyc
+**/.mypy_cache
+coverage_html/
+coverage.xml
+**/.coverage

@@ -7,11 +7,13 @@ import configparser
 import re
 import sys
 
-from black import main as main_black
 import toml
+
+from black import main as main_black
 
 
 def patched_load(*a, **kw):
+    """Attempt to read configuration from .ini, if it makes sense."""
     try:
         from pathlib import Path
 
@@ -29,15 +31,17 @@ def patched_load(*a, **kw):
                     }
                 }
             }
-    except BaseException:
+    except BaseException:  # pylint: disable=W0703
         pass
     return toml.decoder.load(*a, **kw)
 
 
 def main():
+    """Monkey-patch `toml.load` before calling black."""
     sys.argv[0] = re.sub(r"(-script\.pyw?|\.exe)?$", "", sys.argv[0])
 
     toml.load = patched_load
+    # pylint: disable=E1120
     sys.exit(main_black())
 
 
